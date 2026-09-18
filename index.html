@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admiezo — Smart Digital Solutions for Educational Institutions</title>
+  <meta name="description" content="Admiezo empowers colleges, universities, and educational institutions with Digital Evaluation and Intelligent ERP solutions that simplify operations and drive academic excellence." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+  <!-- Spore Canvas Background -->
+  <canvas id="spore-canvas"></canvas>
+
+  <div class="page-wrapper">
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+      <div class="header__inner">
+        <a href="index.html" class="header__logo">
+          <span class="header__logo-icon">A</span>
+          Admiezo
+        </a>
+
+        <button class="header__toggle" id="menu-toggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="header__nav" id="main-nav">
+          <div class="header__links">
+            <a href="index.html" class="header__link">Home</a>
+            <a href="products.html" class="header__link">Products</a>
+            <a href="solutions.html" class="header__link">Solutions</a>
+            <a href="about.html" class="header__link">About Us</a>
+            <a href="contact.html" class="header__link">Contact Us</a>
+          </div>
+          <div class="header__cta">
+            <a href="contact.html" class="btn btn--primary">Request Demo</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero section" id="hero">
+      <div class="gradient-blob gradient-blob--primary" style="width:600px;height:600px;top:-200px;right:-100px;" data-speed="0.4"></div>
+      <div class="gradient-blob gradient-blob--gold" style="width:400px;height:400px;bottom:-100px;left:-50px;" data-speed="0.2"></div>
+
+      <div class="container">
+        <div class="hero__grid">
+          <div class="hero__content reveal">
+            <div class="hero__badge">
+              <span class="pill-badge">🎓 Trusted by 100+ Institutions</span>
+            </div>
+            <h1 class="hero__title">
+              Transform Educational Institutions with <span>Smart Digital Solutions</span>
+            </h1>
+            <p class="hero__desc">
+              Admiezo empowers colleges, universities, and educational institutions with Digital Evaluation and Intelligent ERP solutions that simplify operations, improve efficiency, and drive academic excellence.
+            </p>
+            <div class="hero__actions">
+              <a href="contact.html" class="btn btn--primary btn--lg">
+                Request Demo
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+              <a href="products.html" class="btn btn--outline btn--lg">
+                Explore Products
+              </a>
+            </div>
+          </div>
+
+          <div class="hero__visual reveal-right">
+            <div class="hero__visual-card">
+              <!-- Header -->
+              <div class="hero__dash-header">
+                <div class="hero__dash-dots">
+                  <span class="hero__dash-dot hero__dash-dot--red"></span>
+                  <span class="hero__dash-dot hero__dash-dot--yellow"></span>
+                  <span class="hero__dash-dot hero__dash-dot--green"></span>
+                </div>
+                <div class="hero__dash-title">Admiezo Live Campus Suite</div>
+                <div class="hero__dash-status">
+                  <span class="hero__dash-pulse"></span>
+                  <span>System Active</span>
+                </div>
+              </div>
+
+              <!-- High Contrast KPIs -->
+              <div class="hero__dash-kpis">
+                <div class="hero__dash-kpi hero__dash-kpi--green">
+                  <div class="hero__dash-kpi-label">EVALUATIONS</div>
+                  <div class="hero__dash-kpi-val">12,847</div>
+                  <div class="hero__dash-kpi-sub">↑ 70% Faster Marking</div>
+                </div>
+                <div class="hero__dash-kpi hero__dash-kpi--gold">
+                  <div class="hero__dash-kpi-label">STUDENTS</div>
+                  <div class="hero__dash-kpi-val">5,423</div>
+                  <div class="hero__dash-kpi-sub">● 100% Enrolled Active</div>
+                </div>
+              </div>
+
+              <!-- Live Progress Card -->
+              <div class="hero__dash-widget">
+                <div class="hero__dash-widget-header">
+                  <div>
+                    <div class="hero__dash-widget-title">Final Semester Script Evaluation</div>
+                    <div class="hero__dash-widget-sub">Paper: CS-401 Algorithms • 18 Examiners</div>
+                  </div>
+                  <div class="hero__dash-widget-badge">88% Done</div>
+                </div>
+                <div class="hero__dash-progress-track">
+                  <div class="hero__dash-progress-fill" style="width: 88%;"></div>
+                </div>
+              </div>
+
+              <!-- Live Activity Feed -->
+              <div class="hero__dash-feed">
+                <div class="hero__dash-feed-item">
+                  <span class="hero__dash-feed-icon">✓</span>
+                  <div class="hero__dash-feed-text">
+                    <span class="hero__dash-feed-bold">450 scripts auto-tabulated</span> by Prof. Mehta
+                  </div>
+                  <span class="hero__dash-feed-time">Just now</span>
+                </div>
+                <div class="hero__dash-feed-item">
+                  <span class="hero__dash-feed-icon">⚡</span>
+                  <div class="hero__dash-feed-text">
+                    <span class="hero__dash-feed-bold">Audit log verified:</span> 0 marks discrepancy
+                  </div>
+                  <span class="hero__dash-feed-time">2m ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STATS SECTION ===== -->
+    <section class="section section--dark" id="stats">
+      <div class="gradient-blob gradient-blob--primary" style="width:500px;height:500px;top:-150px;left:-100px;" data-speed="0.3"></div>
+      <div class="container">
+        <div class="stats-row reveal">
+          <div class="stat">
+            <div class="stat__number" data-target="100" data-suffix="+">0</div>
+            <div class="stat__label">Institutions Served</div>
+          </div>
+          <div class="stat">
+            <div class="stat__number" data-target="1" data-suffix="M+" data-decimals="0">0</div>
+            <div class="stat__label">Exam Papers Processed</div>
+          </div>
+          <div class="stat">
+            <div class="stat__number" data-target="50000" data-suffix="+">0</div>
+            <div class="stat__label">Students Managed</div>
+          </div>
+          <div class="stat">
+            <div class="stat__number" data-target="99.9" data-suffix="%" data-decimals="1">0</div>
+            <div class="stat__label">System Uptime</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCTS OVERVIEW ===== -->
+    <section class="section zoom-section" id="products-overview">
+      <div class="gradient-blob gradient-blob--gold" style="width:500px;height:500px;top:0;right:-200px;" data-speed="0.25"></div>
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-header__badge">
+            <span class="pill-badge">Our Products</span>
+          </div>
+          <h2 class="section-header__title">Powerful Solutions Built for Education</h2>
+          <p class="section-header__desc">Two comprehensive platforms designed to digitize and streamline every aspect of academic management.</p>
+        </div>
+
+        <!-- Digital Evaluation -->
+        <div class="product-split reveal" style="margin-bottom:var(--space-4xl);">
+          <div>
+            <span class="pill-badge" style="margin-bottom:var(--space-lg);display:inline-flex;">📝 Digital Evaluation</span>
+            <h3 style="font-size:var(--font-size-2xl);margin-bottom:var(--space-lg);">Admiezo Digital Evaluation</h3>
+            <p style="color:var(--color-text-muted);margin-bottom:var(--space-xl);line-height:var(--line-height-normal);">
+              Revolutionize your examination process with paperless evaluation, automated result processing, and powerful analytics.
+            </p>
+            <div class="checklist" style="margin-bottom:var(--space-xl);">
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Online script evaluation</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Remote assessment</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> On-screen marking</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Auto result processing</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Examiner allocation</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Analytics dashboard</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Security & audit tracking</div>
+            </div>
+            <a href="products.html" class="btn btn--primary">Explore Digital Evaluation →</a>
+          </div>
+          <div class="tilt-card">
+            <div class="glass-card">
+              <div style="text-align:center;padding:var(--space-2xl) 0;">
+                <div style="font-size:3rem;margin-bottom:var(--space-lg);">📝</div>
+                <div style="font-size:var(--font-size-4xl);font-weight:800;color:var(--color-primary);margin-bottom:var(--space-sm);">70%</div>
+                <div style="color:var(--color-text-muted);">Faster Evaluation</div>
+                <div style="margin-top:var(--space-xl);display:flex;justify-content:center;gap:var(--space-lg);">
+                  <div>
+                    <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-text);">99.5%</div>
+                    <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Accuracy</div>
+                  </div>
+                  <div style="width:1px;background:var(--color-border);"></div>
+                  <div>
+                    <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-text);">24/7</div>
+                    <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Access</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ERP -->
+        <div class="product-split product-split--reverse reveal">
+          <div>
+            <span class="pill-badge" style="margin-bottom:var(--space-lg);display:inline-flex;">🏛️ College ERP</span>
+            <h3 style="font-size:var(--font-size-2xl);margin-bottom:var(--space-lg);">Admiezo ERP</h3>
+            <p style="color:var(--color-text-muted);margin-bottom:var(--space-xl);line-height:var(--line-height-normal);">
+              A comprehensive ERP system covering every operational need of educational institutions from admission to placement.
+            </p>
+            <div class="checklist" style="margin-bottom:var(--space-xl);">
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Admission Management</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Student Information System</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Attendance & Faculty Management</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Fees & Examination Module</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Library & Hostel Management</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Placement Cell</div>
+              <div class="checklist__item"><span class="checklist__icon">✓</span> Reports & Analytics</div>
+            </div>
+            <a href="products.html" class="btn btn--primary">Explore ERP →</a>
+          </div>
+          <div class="tilt-card">
+            <div class="glass-card">
+              <div style="text-align:center;padding:var(--space-2xl) 0;">
+                <div style="font-size:3rem;margin-bottom:var(--space-lg);">🏛️</div>
+                <div style="font-size:var(--font-size-4xl);font-weight:800;color:var(--color-gold);margin-bottom:var(--space-sm);">10+</div>
+                <div style="color:var(--color-text-muted);">Integrated Modules</div>
+                <div style="margin-top:var(--space-xl);display:flex;justify-content:center;gap:var(--space-lg);">
+                  <div>
+                    <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-text);">100%</div>
+                    <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Paperless</div>
+                  </div>
+                  <div style="width:1px;background:var(--color-border);"></div>
+                  <div>
+                    <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-text);">360°</div>
+                    <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Management</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY CHOOSE ADMIEZO ===== -->
+    <section class="section zoom-section" id="why-choose" style="background:var(--color-surface-subtle);">
+      <div class="gradient-blob gradient-blob--primary" style="width:400px;height:400px;bottom:-100px;right:-100px;" data-speed="0.3"></div>
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-header__badge">
+            <span class="pill-badge">Why Admiezo</span>
+          </div>
+          <h2 class="section-header__title">Built for Educational Excellence</h2>
+          <p class="section-header__desc">Everything you need to modernize your institution, backed by deep domain expertise.</p>
+        </div>
+
+        <div class="grid grid--3 stagger-grid">
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Educational Industry Expertise</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">Designed specifically for colleges and universities with deep understanding of academic workflows.</p>
+          </div>
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Secure & Scalable</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">Cloud-based architecture with enterprise-grade security and scalability for any institution size.</p>
+          </div>
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Easy Implementation</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">Fast onboarding with comprehensive training and support to get you running quickly.</p>
+          </div>
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0z"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Dedicated Support</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">24×7 technical and customer support ensuring your operations never stop.</p>
+          </div>
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Cost Effective</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">Reduce administration costs and manual work significantly with automation.</p>
+          </div>
+          <div class="dot-card">
+            <span class="dot-tl"></span><span class="dot-br"></span>
+            <div class="feature-card__icon" style="margin-bottom:var(--space-lg);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            </div>
+            <h4 style="margin-bottom:var(--space-sm);">Data Driven Decisions</h4>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:var(--line-height-normal);">Powerful analytics and reporting to make informed decisions for academic growth.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="section zoom-section" id="testimonials">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-header__badge">
+            <span class="pill-badge">Testimonials</span>
+          </div>
+          <h2 class="section-header__title">Trusted by Leading Institutions</h2>
+          <p class="section-header__desc">See what academic leaders say about transforming their institutions with Admiezo.</p>
+        </div>
+
+        <div class="grid grid--3 stagger-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-card__quote">"Admiezo transformed our evaluation process. We reduced paper handling by 90% and results are now published 70% faster."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">RP</div>
+              <div>
+                <div class="testimonial-card__name">Dr. Rajesh Patel</div>
+                <div class="testimonial-card__role">Principal, National Engineering College</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-card__quote">"The ERP system brought all our departments on a single platform. Fee collection, attendance, and placements — everything is seamless now."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">SM</div>
+              <div>
+                <div class="testimonial-card__name">Prof. Sunita Mehta</div>
+                <div class="testimonial-card__role">Registrar, City University</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-card__quote">"Remote evaluation capability was a game-changer. Our examiners can now evaluate scripts from anywhere, anytime."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">AK</div>
+              <div>
+                <div class="testimonial-card__name">Mr. Amit Kumar</div>
+                <div class="testimonial-card__role">Controller of Examinations, State University</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SUCCESS STORIES ===== -->
+    <section class="section section--dark zoom-section" id="success-stories">
+      <div class="gradient-blob gradient-blob--gold" style="width:400px;height:400px;top:-50px;right:10%;" data-speed="0.35"></div>
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-header__badge">
+            <span class="pill-badge pill-badge--dark">Success Stories</span>
+          </div>
+          <h2 class="section-header__title">Real Results, Real Impact</h2>
+          <p class="section-header__desc">See how institutions achieved measurable improvements with Admiezo.</p>
+        </div>
+
+        <div class="grid grid--3 stagger-grid">
+          <div class="glass-card glass-card--dark">
+            <h4 style="color:var(--color-text-inverse);margin-bottom:var(--space-md);">National Engineering College</h4>
+            <p style="color:rgba(255,255,255,0.6);font-size:var(--font-size-sm);margin-bottom:var(--space-xl);line-height:var(--line-height-normal);">Implemented Digital Evaluation for 15,000+ answer scripts per semester.</p>
+            <div style="display:flex;gap:var(--space-xl);">
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-text-inverse);">70%</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Faster Evaluation</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-gold);">90%</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Less Paper</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card glass-card--dark">
+            <h4 style="color:var(--color-text-inverse);margin-bottom:var(--space-md);">City University</h4>
+            <p style="color:rgba(255,255,255,0.6);font-size:var(--font-size-sm);margin-bottom:var(--space-xl);line-height:var(--line-height-normal);">Full ERP deployment across 8 departments and 5,000+ students.</p>
+            <div style="display:flex;gap:var(--space-xl);">
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-text-inverse);">100%</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Digitized Ops</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-gold);">50%</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Cost Saved</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card glass-card--dark">
+            <h4 style="color:var(--color-text-inverse);margin-bottom:var(--space-md);">State Medical College</h4>
+            <p style="color:rgba(255,255,255,0.6);font-size:var(--font-size-sm);margin-bottom:var(--space-xl);line-height:var(--line-height-normal);">Compliance-ready evaluation and student lifecycle management.</p>
+            <div style="display:flex;gap:var(--space-xl);">
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-text-inverse);">99.5%</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Accuracy</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-2xl);font-weight:700;color:var(--color-gold);">24/7</div>
+                <div style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.5);">Uptime</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="section" id="cta">
+      <div class="container">
+        <div class="cta-banner reveal-scale">
+          <div class="gradient-blob gradient-blob--primary" style="width:300px;height:300px;top:-100px;left:-50px;" data-speed="0.2"></div>
+          <div class="gradient-blob gradient-blob--gold" style="width:300px;height:300px;bottom:-100px;right:-50px;" data-speed="0.25"></div>
+          <h2 class="cta-banner__title">Ready to Transform Your Institution?</h2>
+          <p class="cta-banner__desc">Join 100+ educational institutions that trust Admiezo for their digital transformation journey.</p>
+          <div class="cta-banner__actions">
+            <a href="contact.html" class="btn btn--white btn--lg">Request Demo</a>
+            <a href="contact.html" class="btn btn--outline btn--lg" style="border-color:rgba(255,255,255,0.3);color:var(--color-text-inverse);">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__brand">
+            <div class="footer__logo">
+              <span class="footer__logo-icon">A</span>
+              Admiezo
+            </div>
+            <p class="footer__tagline">Revolutionizing Academic Management and Evaluation with Technology.</p>
+            <div class="footer__social">
+              <a href="#" class="footer__social-link" aria-label="LinkedIn">in</a>
+              <a href="#" class="footer__social-link" aria-label="Twitter">𝕏</a>
+              <a href="#" class="footer__social-link" aria-label="Facebook">f</a>
+              <a href="#" class="footer__social-link" aria-label="YouTube">▶</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer__col-title">Products</h4>
+            <a href="products.html" class="footer__link">Digital Evaluation</a>
+            <a href="products.html" class="footer__link">College ERP</a>
+            <a href="products.html" class="footer__link">Analytics</a>
+          </div>
+          <div>
+            <h4 class="footer__col-title">Company</h4>
+            <a href="about.html" class="footer__link">About Us</a>
+            <a href="solutions.html" class="footer__link">Solutions</a>
+            <a href="contact.html" class="footer__link">Contact Us</a>
+            <a href="#" class="footer__link">Careers</a>
+          </div>
+          <div>
+            <h4 class="footer__col-title">Support</h4>
+            <a href="#" class="footer__link">Help Center</a>
+            <a href="#" class="footer__link">Documentation</a>
+            <a href="#" class="footer__link">Privacy Policy</a>
+            <a href="#" class="footer__link">Terms & Conditions</a>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <p class="footer__copyright">© 2024 Admiezo. All rights reserved.</p>
+          <div class="footer__legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
