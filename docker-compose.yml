@@ -1,0 +1,11 @@
+services:
+  admiezo-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admiezo_website
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production

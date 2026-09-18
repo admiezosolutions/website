@@ -11,12 +11,17 @@
 
 html {
   scroll-behavior: auto; /* Lenis handles smooth scroll */
+  scroll-padding-top: 96px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html.lenis, html.lenis body {
   height: auto;
+}
+
+html.is-navigating {
+  cursor: progress;
 }
 
 .lenis.lenis-smooth {
@@ -35,6 +40,11 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   overflow-x: hidden;
+}
+
+body.nav-open {
+  overflow: hidden;
+  touch-action: none;
 }
 
 img {
@@ -127,22 +137,34 @@ p {
 }
 
 /* Animation helpers */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(60px);
-}
-
+.reveal,
+.reveal-left,
+.reveal-right,
 .reveal-scale {
-  opacity: 0;
-  transform: scale(0.9);
+  opacity: 1;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
 }

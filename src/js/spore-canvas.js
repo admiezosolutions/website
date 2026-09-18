@@ -65,8 +65,9 @@ export class SporeCanvas {
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 120) {
         const force = (120 - dist) / 120;
-        p.x += (dx / dist) * force * 1.5;
-        p.y += (dy / dist) * force * 1.5;
+        const safeDist = Math.max(dist, 1);
+        p.x += (dx / safeDist) * force * 1.5;
+        p.y += (dy / safeDist) * force * 1.5;
       }
 
       // Reset particle when it floats off top

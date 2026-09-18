@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us — Request a Demo | Admiezo</title>
   <meta name="description" content="Get in touch with Admiezo. Request a demo for Digital Evaluation or College ERP, schedule a consultation, or connect with our support team." />
+  <link rel="stylesheet" href="/src/styles/main.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body>
@@ -12,7 +13,7 @@
   <div class="page-wrapper">
 
     <!-- HEADER -->
-    <header class="header" id="header">
+    <header class="header header--on-dark header--contrast-light" id="header">
       <div class="header__inner">
         <a href="index.html" class="header__logo">
           <span class="header__logo-icon">A</span>Admiezo
@@ -57,18 +58,18 @@
             </div>
 
             <form id="contact-form" novalidate>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-bottom:var(--space-md);">
+              <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label" for="full-name">Full Name *</label>
                   <input class="form-input" type="text" id="full-name" name="name" placeholder="e.g. Dr. Ramesh Sharma" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="email">Work Email *</label>
-                  <input class="form-input" type="email" id="email" name="email" placeholder="ramesh@institution.edu" required />
+                  <label class="form-label" for="email"> Email *</label>
+                  <input class="form-input" type="email" id="email" name="email" placeholder="ramesh@gmail.com" required />
                 </div>
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-bottom:var(--space-md);">
+              <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label" for="phone">Phone Number *</label>
                   <input class="form-input" type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required />
@@ -103,7 +104,7 @@
           </div>
 
           <!-- RIGHT: CONTACT INFO & MAP CARD -->
-          <div class="reveal-right" style="display:flex;flex-direction:column;gap:var(--space-xl);">
+          <div class="contact-layout__aside reveal-right">
             
             <div class="glass-card">
               <h3 style="font-size:var(--font-size-xl);margin-bottom:var(--space-lg);">Direct Contacts</h3>
@@ -113,7 +114,7 @@
                   <div class="feature-card__icon" style="width:48px;height:48px;margin-bottom:0;flex-shrink:0;">📞</div>
                   <div>
                     <div style="font-weight:600;font-size:var(--font-size-sm);color:var(--color-text);">Phone Support</div>
-                    <a href="tel:+919876543210" style="font-size:var(--font-size-base);color:var(--color-primary);font-weight:600;">+91 98765 43210</a>
+                    <a href="tel:+918310808075" style="font-size:var(--font-size-base);color:var(--color-primary);font-weight:600;">+91 83108 08075</a>
                     <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Mon – Sat, 9:00 AM – 7:00 PM IST</div>
                   </div>
                 </div>
@@ -122,8 +123,8 @@
                   <div class="feature-card__icon" style="width:48px;height:48px;margin-bottom:0;flex-shrink:0;">✉️</div>
                   <div>
                     <div style="font-weight:600;font-size:var(--font-size-sm);color:var(--color-text);">Email Inquiries</div>
-                    <a href="mailto:contact@admiezo.com" style="font-size:var(--font-size-base);color:var(--color-primary);font-weight:600;">contact@admiezo.com</a>
-                    <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">demo@admiezo.com for sales</div>
+                    <a href="mailto:info@admiezo.com" style="font-size:var(--font-size-base);color:var(--color-primary);font-weight:600;">info@admiezo.com</a>
+
                   </div>
                 </div>
 
@@ -131,7 +132,7 @@
                   <div class="feature-card__icon" style="width:48px;height:48px;margin-bottom:0;flex-shrink:0;">💬</div>
                   <div>
                     <div style="font-weight:600;font-size:var(--font-size-sm);color:var(--color-text);">WhatsApp Quick Connect</div>
-                    <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="btn btn--outline" style="padding:0.4rem 1rem;margin-top:var(--space-xs);font-size:var(--font-size-xs);">
+                    <a href="https://wa.me/918310808075" target="_blank" rel="noopener" class="btn btn--outline" style="padding:0.4rem 1rem;margin-top:var(--space-xs);font-size:var(--font-size-xs);">
                       Chat on WhatsApp →
                     </a>
                   </div>
@@ -142,34 +143,27 @@
                   <div>
                     <div style="font-weight:600;font-size:var(--font-size-sm);color:var(--color-text);">Headquarters</div>
                     <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);line-height:1.5;">
-                      Admiezo Tech Park, Suite 402<br />
-                      Innovation Hub, Outer Ring Road<br />
-                      Bengaluru, Karnataka — 560103
+                      Admiezo Private Limited,<br />
+                      A Block, S S Layout, Beside Karnataka Bank<br />
+                      Davangere, Karnataka — 577004
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- INTERACTIVE MAP PREVIEW CARD -->
-            <div class="glass-card" style="padding:0;overflow:hidden;min-height:220px;position:relative;background:var(--color-bg-dark);display:flex;flex-direction:column;justify-content:flex-end;">
-              <!-- Simulated styled map view -->
-              <div style="position:absolute;inset:0;background:radial-gradient(circle at 60% 40%, rgba(23,106,79,0.35), transparent 70%), linear-gradient(135deg, #193229 0%, #0d1e17 100%);"></div>
-              
-              <!-- Subtle decorative grid lines -->
-              <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(220,227,223,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(220,227,223,0.06) 1px, transparent 1px);background-size:24px 24px;"></div>
-              
-              <!-- Pin -->
-              <div style="position:absolute;top:40%;left:50%;transform:translate(-50%, -50%);text-align:center;z-index:2;">
-                <div style="width:20px;height:20px;background:var(--color-gold);border:3px solid #fff;border-radius:50%;box-shadow:0 0 15px rgba(168,109,16,0.8);margin:0 auto 6px;animation:dotPulse 2s infinite;"></div>
-                <div style="background:rgba(25,50,41,0.9);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:4px 10px;border-radius:var(--radius-pill);color:#fff;font-size:0.75rem;font-weight:600;white-space:nowrap;">
-                  Admiezo Headquarters • Bengaluru
-                </div>
-              </div>
-
-              <div style="position:relative;z-index:2;padding:var(--space-md) var(--space-lg);background:rgba(25,50,41,0.85);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;">
-                <span style="font-size:var(--font-size-xs);color:rgba(255,255,255,0.7);">Campus visits by prior appointment</span>
-                <a href="https://maps.google.com" target="_blank" rel="noopener" style="font-size:var(--font-size-xs);color:var(--color-gold);font-weight:600;">Open in Google Maps ↗</a>
+            <!-- MAP -->
+            <div class="glass-card contact-map">
+              <iframe
+                class="contact-map__frame"
+                src="https://www.google.com/maps?q=14.45154,75.90330&amp;z=15&amp;output=embed"
+                title="Admiezo headquarters at 14.45154 degrees north, 75.90330 degrees east"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+              <div class="contact-map__footer">
+                <span>14.45154&deg; N, 75.90330&deg; E</span>
+                <a class="contact-map__link" href="https://www.google.com/maps?q=14.45154,75.90330" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>
               </div>
             </div>
 
@@ -180,29 +174,7 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer__grid">
-          <div class="footer__brand">
-            <div class="footer__logo"><span class="footer__logo-icon">A</span>Admiezo</div>
-            <p class="footer__tagline">Revolutionizing Academic Management and Evaluation with Technology.</p>
-            <div class="footer__social">
-              <a href="#" class="footer__social-link">in</a>
-              <a href="#" class="footer__social-link">𝕏</a>
-              <a href="#" class="footer__social-link">f</a>
-              <a href="#" class="footer__social-link">▶</a>
-            </div>
-          </div>
-          <div><h4 class="footer__col-title">Products</h4><a href="products.html" class="footer__link">Digital Evaluation</a><a href="products.html" class="footer__link">College ERP</a><a href="products.html" class="footer__link">Analytics</a></div>
-          <div><h4 class="footer__col-title">Company</h4><a href="about.html" class="footer__link">About Us</a><a href="solutions.html" class="footer__link">Solutions</a><a href="contact.html" class="footer__link">Contact Us</a><a href="#" class="footer__link">Careers</a></div>
-          <div><h4 class="footer__col-title">Support</h4><a href="#" class="footer__link">Help Center</a><a href="#" class="footer__link">Documentation</a><a href="#" class="footer__link">Privacy Policy</a><a href="#" class="footer__link">Terms & Conditions</a></div>
-        </div>
-        <div class="footer__bottom">
-          <p class="footer__copyright">© 2024 Admiezo. All rights reserved.</p>
-          <div class="footer__legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
-        </div>
-      </div>
-    </footer>
+    <footer class="footer" id="footer" data-site-footer></footer>
   </div>
   <script type="module" src="/src/main.js"></script>
 </body>

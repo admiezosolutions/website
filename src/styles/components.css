@@ -419,6 +419,7 @@
   padding: 4px;
   width: fit-content;
   margin: 0 auto var(--space-3xl);
+  max-width: 100%;
 }
 
 .tabs__btn {
@@ -439,6 +440,23 @@
   background: var(--color-primary);
   color: var(--color-text-inverse);
   box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+}
+
+@media (max-width: 560px) {
+  .tabs__nav {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    border-radius: var(--radius-md);
+  }
+
+  .tabs__btn {
+    flex: 0 0 auto;
+  }
+
+  .tabs__panel > .section--dark {
+    padding: var(--space-2xl) var(--space-lg) !important;
+  }
 }
 
 .tabs__panel {
@@ -602,6 +620,28 @@
 .form-textarea {
   resize: vertical;
   min-height: 120px;
+}
+
+.form-error {
+  margin-top: 4px;
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+}
+
+.form-status {
+  min-height: 1.4em;
+  margin-top: var(--space-md);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.form-status--success {
+  color: var(--color-primary);
+}
+
+.form-status--error {
+  color: var(--color-error);
 }
 
 /* ---- CTA Banner ---- */

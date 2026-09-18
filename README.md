@@ -1,8 +1,7 @@
-# Admiezo — Smart Digital Solutions for Educational Institutions
+# Admiezo Private Limited — Smart Digital Solutions for Educational Institutions
 
-A modern, high-performance showcase website built for **Admiezo**, empowering colleges, universities, and educational institutions with Digital Evaluation and Intelligent ERP solutions.
+A modern, high-performance showcase website built for **Admiezo Private Limited**, empowering colleges, universities, and educational institutions with Digital Evaluation and Intelligent ERP solutions.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Vite](https://img.shields.io/badge/built%20with-Vite-646CFF.svg)
 ![GSAP](https://img.shields.io/badge/animation-GSAP%203-88CE02.svg)
 ![Lenis](https://img.shields.io/badge/smooth%20scroll-Lenis-black.svg)
@@ -105,36 +104,29 @@ npm run preview
 
 This repository comes pre-configured with **GitHub Actions** for automatic deployment to **GitHub Pages**.
 
-### Step 1: Initialize Git and Push to GitHub
+### Step 1: Push to the private company repository
 
 Run the following commands in your terminal:
 
 ```bash
-# Initialize git repository
-git init
 git add .
 git commit -m "Initial commit: Admiezo website showcase"
 
 # Rename default branch to main
 git branch -M main
 
-# Add your GitHub repository remote (replace YOUR_USERNAME and REPO_NAME)
-git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
+# Add the private company repository remote
+git remote add origin https://github.com/YOUR_ORGANIZATION/REPO_NAME.git
 
 # Push to GitHub
 git push -u origin main
 ```
 
-### Step 2: Enable GitHub Pages in Repository Settings
+### Step 2: Configure deployment
 
-1. Go to your repository on GitHub: `https://github.com/YOUR_USERNAME/REPO_NAME`.
-2. Click on **Settings** → **Pages** (in the left sidebar).
-3. Under **Build and deployment** → **Source**, select **GitHub Actions**.
-4. That's it! The workflow in `.github/workflows/deploy.yml` will automatically build and deploy your site whenever you push to `main`.
-5. Your live site will be accessible at:
-   ```
-   https://YOUR_USERNAME.github.io/REPO_NAME/
-   ```
+1. Keep the repository private and grant deployment access only to the company’s approved team.
+2. Use the included GitHub Actions workflow or connect the private repository to Vercel/Netlify.
+3. Store deployment credentials and environment values in repository or organization secrets; do not commit them.
 
 ---
 
@@ -153,6 +145,6 @@ git push -u origin main
 
 ---
 
-## 📄 License
+## 📄 Ownership
 
-MIT © 2024 Admiezo. All rights reserved.
+This repository and its source code are proprietary to Admiezo Private Limited. All rights reserved. No license to copy, modify, distribute, or publish this code is granted without written permission.
