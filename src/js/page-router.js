@@ -1,17 +1,14 @@
-/* Page Router — instant same-origin navigation with prefetch */
-import { cleanupGSAPAnimations } from './gsap-animations.js';
+/* Page Router - instant same-origin navigation with deduplicated prefetch */
 
 const parser = new DOMParser();
 const pageCache = new Map();
-let isNavigating = false;
+const pendingPages = new Map();
 
-const idle = (callback) => {
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(callback, { timeout: 1500 });
-  } else {
-    window.setTimeout(callback, 250);
-  }
-};
+function canonicalUrl(url) {
+  const canonical = new URL(url, window.location.href);
+  canonical.hash = '';
+  return canonical.href;
+}
 
 function isPageUrl(url) {
   const path = url.pathname;
@@ -31,63 +28,52 @@ function getEligibleUrl(link) {
 
   const url = new URL(href, window.location.href);
   if (url.origin !== window.location.origin || !isPageUrl(url)) return null;
-
   return url;
 }
 
 async function loadPage(url) {
-  const cacheKey = url.href;
+  const cacheKey = canonicalUrl(url);
+
   if (pageCache.has(cacheKey)) {
     return pageCache.get(cacheKey).cloneNode(true);
   }
 
-  const response = await fetch(cacheKey, {
-    headers: { Accept: 'text/html' },
-    credentials: 'same-origin',
-  });
+  if (!pendingPages.has(cacheKey)) {
+    const request = fetch(cacheKey, {
+      headers: { Accept: 'text/html' },
+      credentials: 'same-origin',
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to load ${cacheKey}`);
+        return response.text();
+      })
+      .then((text) => {
+        const doc = parser.parseFromString(text, 'text/html');
+        if (!doc.querySelector('.page-wrapper')) {
+          throw new Error(`Missing page wrapper in ${cacheKey}`);
+        }
+        pageCache.set(cacheKey, doc);
+        return doc;
+      })
+      .finally(() => pendingPages.delete(cacheKey));
 
-  if (!response.ok) {
-    throw new Error(`Failed to load ${cacheKey}`);
+    pendingPages.set(cacheKey, request);
   }
 
-  const text = await response.text();
-  const doc = parser.parseFromString(text, 'text/html');
-
-  if (!doc.querySelector('.page-wrapper')) {
-    throw new Error(`Missing page wrapper in ${cacheKey}`);
-  }
-
-  pageCache.set(cacheKey, doc);
+  const doc = await pendingPages.get(cacheKey);
   return doc.cloneNode(true);
 }
 
 function prefetch(url) {
-  if (pageCache.has(url.href)) return;
+  const cacheKey = canonicalUrl(url);
+  if (pageCache.has(cacheKey) || pendingPages.has(cacheKey)) return;
   loadPage(url).catch(() => {
-    pageCache.delete(url.href);
+    pageCache.delete(cacheKey);
   });
-}
-
-function prefetchLikelyPages({ eager = false } = {}) {
-  const run = () => {
-    document.querySelectorAll('a[href]').forEach((link) => {
-      const url = getEligibleUrl(link);
-      if (url && normalizePathname(url.pathname) !== normalizePathname(window.location.pathname)) {
-        prefetch(url);
-      }
-    });
-  };
-
-  if (eager) {
-    run();
-  } else {
-    idle(run);
-  }
 }
 
 function updateHead(nextDoc) {
   document.title = nextDoc.title;
-
   const currentDescription = document.querySelector('meta[name="description"]');
   const nextDescription = nextDoc.querySelector('meta[name="description"]');
 
@@ -101,16 +87,58 @@ function scrollToTop(lenis) {
   window.scrollTo(0, 0);
 }
 
-export function initPageRouter({ initPage, lenis } = {}) {
-  if (!initPage) return;
+export function initPageRouter({ destroyPage, initPage, lenis } = {}) {
+  if (!initPage) return undefined;
 
-  const swapPage = async (url, { push = true } = {}) => {
-    if (isNavigating) return;
-    isNavigating = true;
+  let navigationId = 0;
+  let idleHandle = null;
+  let idleHandleType = null;
+
+  pageCache.set(canonicalUrl(window.location.href), document.cloneNode(true));
+
+  const schedulePrefetch = () => {
+    if (navigator.connection?.saveData || /(^|-)2g$/.test(navigator.connection?.effectiveType || '')) {
+      return;
+    }
+
+    const run = () => {
+      idleHandle = null;
+      idleHandleType = null;
+      const seen = new Set();
+
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const url = getEligibleUrl(link);
+        if (!url) return;
+
+        const key = canonicalUrl(url);
+        if (
+          key !== canonicalUrl(window.location.href) &&
+          !seen.has(key)
+        ) {
+          seen.add(key);
+          prefetch(url);
+        }
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      idleHandleType = 'idle';
+      idleHandle = window.requestIdleCallback(run, { timeout: 1200 });
+    } else {
+      idleHandleType = 'timeout';
+      idleHandle = window.setTimeout(run, 200);
+    }
+  };
+
+  const swapPage = async (url, { push = true, sourceLink = null } = {}) => {
+    const currentNavigation = ++navigationId;
     document.documentElement.classList.add('is-navigating');
+    sourceLink?.classList.add('is-pending');
 
     try {
       const nextDoc = await loadPage(url);
+      if (currentNavigation !== navigationId) return;
+
       const nextWrapper = nextDoc.querySelector('.page-wrapper');
       const currentWrapper = document.querySelector('.page-wrapper');
 
@@ -119,33 +147,29 @@ export function initPageRouter({ initPage, lenis } = {}) {
         return;
       }
 
-      const update = () => {
-        cleanupGSAPAnimations();
-        document.body.classList.remove('nav-open');
-        lenis?.start();
-        currentWrapper.replaceWith(nextWrapper);
-        updateHead(nextDoc);
+      destroyPage?.();
+      document.body.classList.remove('nav-open');
+      lenis?.start();
+      currentWrapper.replaceWith(nextWrapper);
+      updateHead(nextDoc);
 
-        if (push) {
-          window.history.pushState({}, '', url.href);
-        }
+      if (push) window.history.pushState({}, '', url.href);
 
-        scrollToTop(lenis);
-        lenis?.resize();
-        initPage({ instant: true });
-        prefetchLikelyPages();
-      };
-
-      update();
+      scrollToTop(lenis);
+      lenis?.resize();
+      initPage({ instant: true });
+      schedulePrefetch();
     } catch {
-      window.location.assign(url.href);
+      if (currentNavigation === navigationId) window.location.assign(url.href);
     } finally {
-      isNavigating = false;
-      document.documentElement.classList.remove('is-navigating');
+      sourceLink?.classList.remove('is-pending');
+      if (currentNavigation === navigationId) {
+        document.documentElement.classList.remove('is-navigating');
+      }
     }
   };
 
-  document.addEventListener('click', (event) => {
+  const onClick = (event) => {
     if (event.defaultPrevented || event.button !== 0) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
@@ -158,29 +182,44 @@ export function initPageRouter({ initPage, lenis } = {}) {
       url.search === window.location.search
     ) {
       event.preventDefault();
-      if (!url.hash) {
-        scrollToTop(lenis);
-      }
+      if (!url.hash) scrollToTop(lenis);
       return;
     }
 
     event.preventDefault();
-    swapPage(url);
-  });
+    swapPage(url, { sourceLink: link });
+  };
 
-  document.addEventListener('pointerover', (event) => {
+  const onPointerOver = (event) => {
     const url = getEligibleUrl(event.target.closest('a[href]'));
     if (url) prefetch(url);
-  }, { passive: true });
+  };
 
-  document.addEventListener('focusin', (event) => {
+  const onFocusIn = (event) => {
     const url = getEligibleUrl(event.target.closest('a[href]'));
     if (url) prefetch(url);
-  });
+  };
 
-  window.addEventListener('popstate', () => {
+  const onPopState = () => {
     swapPage(new URL(window.location.href), { push: false });
-  });
+  };
 
-  prefetchLikelyPages({ eager: true });
+  document.addEventListener('click', onClick);
+  document.addEventListener('pointerover', onPointerOver, { passive: true });
+  document.addEventListener('focusin', onFocusIn);
+  window.addEventListener('popstate', onPopState);
+  schedulePrefetch();
+
+  return () => {
+    navigationId += 1;
+    document.removeEventListener('click', onClick);
+    document.removeEventListener('pointerover', onPointerOver);
+    document.removeEventListener('focusin', onFocusIn);
+    window.removeEventListener('popstate', onPopState);
+
+    if (idleHandle !== null) {
+      if (idleHandleType === 'idle') window.cancelIdleCallback(idleHandle);
+      else window.clearTimeout(idleHandle);
+    }
+  };
 }

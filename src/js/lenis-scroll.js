@@ -19,12 +19,13 @@ export function initLenis() {
     respectReducedMotion: true,
   });
 
-  lenis.on('scroll', ScrollTrigger.update);
+  const removeScrollListener = lenis.on('scroll', ScrollTrigger.update);
 
-  // Sync with GSAP ticker
-  gsap.ticker.add((time) => {
+  // GSAP owns the single primary frame clock used by Lenis and ScrollTrigger.
+  const onTick = (time) => {
     lenis.raf(time * 1000);
-  });
+  };
+  gsap.ticker.add(onTick);
   gsap.ticker.lagSmoothing(0);
 
   const getHeaderOffset = () => {
@@ -42,26 +43,37 @@ export function initLenis() {
     }
   };
 
-  // Scroll-to for in-page anchor links. Placeholder links stay inert.
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      const target = getAnchorTarget(href);
-      if (href === '#') {
-        e.preventDefault();
-        return;
-      }
+  // Delegation keeps anchors working after the router replaces page content.
+  const onAnchorClick = (event) => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
 
-      if (target) {
-        e.preventDefault();
-        lenis.scrollTo(target, {
-          offset: getHeaderOffset(),
-          duration: 0.55,
-          easing: (t) => 1 - Math.pow(1 - t, 3),
-        });
-      }
-    });
-  });
+    const href = link.getAttribute('href');
+    const target = getAnchorTarget(href);
+    if (href === '#') {
+      event.preventDefault();
+      return;
+    }
 
-  return lenis;
+    if (target) {
+      event.preventDefault();
+      lenis.scrollTo(target, {
+        offset: getHeaderOffset(),
+        duration: 0.55,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+      });
+    }
+  };
+
+  document.addEventListener('click', onAnchorClick);
+
+  return {
+    lenis,
+    destroy() {
+      document.removeEventListener('click', onAnchorClick);
+      removeScrollListener?.();
+      gsap.ticker.remove(onTick);
+      lenis.destroy();
+    },
+  };
 }

@@ -6,13 +6,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 let animationsContext = null;
 let cleanupHeroTilt = null;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 export function cleanupGSAPAnimations() {
   cleanupHeroTilt?.();
   cleanupHeroTilt = null;
   animationsContext?.revert();
   animationsContext = null;
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 }
 
 function showAnimatedElementsImmediately() {
@@ -39,13 +39,16 @@ function showAnimatedElementsImmediately() {
 export function initGSAPAnimations({ instant = false } = {}) {
   cleanupGSAPAnimations();
 
-  if (instant) {
+  if (instant || reducedMotion.matches) {
     showAnimatedElementsImmediately();
-    ScrollTrigger.refresh();
+  }
+
+  if (reducedMotion.matches) {
     return;
   }
 
   animationsContext = gsap.context(() => {
+  if (!instant) {
   // ---- Reveal animations ----
   gsap.utils.toArray('.reveal').forEach((el, i) => {
     gsap.fromTo(el,
@@ -127,42 +130,72 @@ export function initGSAPAnimations({ instant = false } = {}) {
       }
     );
   });
+  }
 
   // ---- 3D Tilt on Hero Visual ----
   const heroCard = document.querySelector('.hero__visual-card');
   if (heroCard && window.matchMedia('(pointer: fine)').matches) {
-    let pointerX = window.innerWidth / 2;
-    let pointerY = window.innerHeight / 2;
+    const setRotateX = gsap.quickSetter(heroCard, 'rotateX', 'deg');
+    const setRotateY = gsap.quickSetter(heroCard, 'rotateY', 'deg');
+    const baseRotateX = 3;
+    const baseRotateY = -8;
+    let currentX = baseRotateX;
+    let currentY = baseRotateY;
+    let targetX = baseRotateX;
+    let targetY = baseRotateY;
+    let bounds = null;
     let tiltFrame = null;
 
-    const updateTilt = () => {
-      const rect = heroCard.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const rotateX = ((pointerY - centerY) / window.innerHeight) * -8;
-      const rotateY = ((pointerX - centerX) / window.innerWidth) * 12;
+    gsap.set(heroCard, { transformPerspective: 1000 });
 
-      gsap.to(heroCard, {
-        rotateX: 3 + rotateX,
-        rotateY: -8 + rotateY,
-        duration: 0.8,
-        ease: 'power2.out',
-        transformPerspective: 1000,
-      });
-      tiltFrame = null;
-    };
+    const renderTilt = () => {
+      currentX += (targetX - currentX) * 0.18;
+      currentY += (targetY - currentY) * 0.18;
+      setRotateX(currentX);
+      setRotateY(currentY);
 
-    const onPointerMove = (e) => {
-      pointerX = e.clientX;
-      pointerY = e.clientY;
-      if (!tiltFrame) {
-        tiltFrame = requestAnimationFrame(updateTilt);
+      if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+        tiltFrame = requestAnimationFrame(renderTilt);
+      } else {
+        currentX = targetX;
+        currentY = targetY;
+        setRotateX(currentX);
+        setRotateY(currentY);
+        tiltFrame = null;
       }
     };
 
-    document.addEventListener('pointermove', onPointerMove, { passive: true });
+    const requestTiltFrame = () => {
+      if (!tiltFrame) tiltFrame = requestAnimationFrame(renderTilt);
+    };
+
+    const onPointerEnter = () => {
+      bounds = heroCard.getBoundingClientRect();
+    };
+
+    const onPointerMove = (e) => {
+      bounds ||= heroCard.getBoundingClientRect();
+      const x = (e.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (e.clientY - bounds.top) / bounds.height - 0.5;
+      targetX = baseRotateX - y * 8;
+      targetY = baseRotateY + x * 12;
+      requestTiltFrame();
+    };
+
+    const onPointerLeave = () => {
+      bounds = null;
+      targetX = baseRotateX;
+      targetY = baseRotateY;
+      requestTiltFrame();
+    };
+
+    heroCard.addEventListener('pointerenter', onPointerEnter, { passive: true });
+    heroCard.addEventListener('pointermove', onPointerMove, { passive: true });
+    heroCard.addEventListener('pointerleave', onPointerLeave, { passive: true });
     cleanupHeroTilt = () => {
-      document.removeEventListener('pointermove', onPointerMove);
+      heroCard.removeEventListener('pointerenter', onPointerEnter);
+      heroCard.removeEventListener('pointermove', onPointerMove);
+      heroCard.removeEventListener('pointerleave', onPointerLeave);
       if (tiltFrame) {
         cancelAnimationFrame(tiltFrame);
         tiltFrame = null;
@@ -170,6 +203,7 @@ export function initGSAPAnimations({ instant = false } = {}) {
     };
   }
 
+  if (!instant) {
   // ---- Section zoom on scroll ----
   gsap.utils.toArray('.zoom-section').forEach((section) => {
     gsap.fromTo(section, 
@@ -222,6 +256,7 @@ export function initGSAPAnimations({ instant = false } = {}) {
       }
     );
   });
+  }
 
   // ---- Floating animation for decorative elements ----
   gsap.utils.toArray('.float-anim').forEach((el, i) => {

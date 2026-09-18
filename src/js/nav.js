@@ -1,6 +1,11 @@
 /* Navigation — Sticky header, mobile menu, active page */
 
-let cleanupNav = () => {};
+let cleanupCurrentNav = () => {};
+
+export function cleanupNav() {
+  cleanupCurrentNav();
+  cleanupCurrentNav = () => {};
+}
 
 export function initNav({ lenis } = {}) {
   cleanupNav();
@@ -109,7 +114,7 @@ export function initNav({ lenis } = {}) {
     }
   });
 
-  cleanupNav = () => {
+  cleanupCurrentNav = () => {
     cleanupFns.forEach((cleanup) => cleanup());
     cleanupFns.length = 0;
   };

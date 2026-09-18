@@ -24,6 +24,10 @@ html.is-navigating {
   cursor: progress;
 }
 
+html.is-navigating .is-pending {
+  opacity: 0.72;
+}
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
