@@ -10,7 +10,8 @@
   right: 0;
   z-index: var(--z-sticky);
   padding: var(--space-md) 0;
-  transition: all var(--transition-base);
+  transition: background-color var(--transition-base), border-color var(--transition-base),
+    box-shadow var(--transition-base), padding var(--transition-base);
   background: transparent;
   --header-logo-color: var(--color-text);
   --header-logo-icon-bg: var(--color-primary);
@@ -23,8 +24,8 @@
 
 .header.scrolled {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border-light);
   box-shadow: var(--shadow-sm);
   padding: var(--space-sm) 0;
@@ -149,7 +150,8 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   height: 2px;
   background: var(--header-toggle-color);
   border-radius: 2px;
-  transition: all var(--transition-base), background var(--transition-base);
+  transition: background-color var(--transition-base), opacity var(--transition-base),
+    transform var(--transition-base);
 }
 
 .header__toggle.active span:nth-child(1) {
@@ -178,8 +180,8 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
     height: 100dvh;
     min-height: 100vh;
     background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -270,7 +272,7 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.6);
-  transition: all var(--transition-base);
+  transition: background-color var(--transition-base), color var(--transition-base);
   font-size: var(--font-size-sm);
 }
 
@@ -495,7 +497,8 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   background: #F8FAF9;
   border-radius: var(--radius-md);
   padding: 1rem 1.1rem;
-  transition: all var(--transition-base);
+  transition: background-color var(--transition-base), border-color var(--transition-base),
+    box-shadow var(--transition-base), transform var(--transition-base);
 }
 
 .hero__dash-kpi--green {
@@ -880,7 +883,7 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-2xl);
-  transition: all var(--transition-slow);
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
 }
 
 .team-card:hover {
@@ -975,7 +978,7 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: var(--space-3xl);
-  transition: all var(--transition-slow);
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
   position: relative;
   overflow: hidden;
 }
