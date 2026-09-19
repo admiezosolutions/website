@@ -15,34 +15,27 @@
   <!-- Spore Canvas Background -->
   <canvas id="spore-canvas"></canvas>
 
-  <div class="page-wrapper">
+  <!-- ===== HEADER ===== -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-icon">A</span>Admiezo
+      </a>
+      <button class="header__toggle" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <nav class="header__nav" id="main-nav">
+        <div class="header__links">
+          <a href="index.html" class="header__link">Home</a>
+          <a href="products.html" class="header__link">Products</a>
+          <a href="solutions.html" class="header__link">Solutions</a>
+          <a href="about.html" class="header__link">About Us</a>
+          <a href="contact.html" class="header__link">Contact Us</a>
+        </div>
+        <div class="header__cta"><a href="contact.html" class="btn btn--primary">Request Demo</a></div>
+      </nav>
+    </div>
+  </header>
 
-    <!-- ===== HEADER ===== -->
-    <header class="header" id="header">
-      <div class="header__inner">
-        <a href="index.html" class="header__logo">
-          <span class="header__logo-icon">A</span>
-          Admiezo
-        </a>
-
-        <button class="header__toggle" id="menu-toggle" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-
-        <nav class="header__nav" id="main-nav">
-          <div class="header__links">
-            <a href="index.html" class="header__link">Home</a>
-            <a href="products.html" class="header__link">Products</a>
-            <a href="solutions.html" class="header__link">Solutions</a>
-            <a href="about.html" class="header__link">About Us</a>
-            <a href="contact.html" class="header__link">Contact Us</a>
-          </div>
-          <div class="header__cta">
-            <a href="contact.html" class="btn btn--primary">Request Demo</a>
-          </div>
-        </nav>
-      </div>
-    </header>
+  <main class="page-wrapper">
 
     <!-- ===== HERO SECTION ===== -->
     <section class="hero section" id="hero">
@@ -315,10 +308,10 @@
       </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer" id="footer" data-site-footer></footer>
+  </main>
 
-  </div>
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer" data-site-footer></footer>
 
   <script type="module" src="/src/main.js"></script>
 </body>

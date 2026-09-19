@@ -126,8 +126,6 @@ export function initPageRouter({
   let isNavigating = false;
   let idleHandle = null;
   let idleHandleType = null;
-  let enhancementFrame = null;
-  let enhancementTimer = null;
   let pressedElement = null;
   let pressTimer = null;
   let recentInteractionUntil = 0;
@@ -210,31 +208,12 @@ export function initPageRouter({
     onNavigationEnd?.();
   };
 
-  const deferPageEnhancements = (currentNavigation, sourceLink) => {
-    enhancementFrame = requestAnimationFrame(() => {
-      enhancementFrame = null;
-      enhancementTimer = window.setTimeout(() => {
-        enhancementTimer = null;
-        if (currentNavigation !== navigationId) return;
-        destroyPage?.();
-        lenis?.resize();
-        initPage({ instant: true });
-        finishNavigation(currentNavigation, sourceLink);
-        schedulePrefetch();
-      }, 0);
-    });
-  };
-
   const swapPage = async (url, { push = true, sourceLink = null } = {}) => {
     const currentNavigation = ++navigationId;
     const targetKey = canonicalUrl(url);
     isNavigating = true;
     cancelIdlePrefetch();
     cancelPendingRequests(targetKey, { prefetchOnly: false });
-    if (enhancementFrame) cancelAnimationFrame(enhancementFrame);
-    if (enhancementTimer) window.clearTimeout(enhancementTimer);
-    enhancementFrame = null;
-    enhancementTimer = null;
     document.documentElement.classList.add('is-navigating');
     sourceLink?.classList.add('is-pending');
     onNavigationStart?.();
@@ -249,13 +228,26 @@ export function initPageRouter({
         return;
       }
 
-      currentWrapper.replaceWith(page.wrapper);
-      updateHead(page);
-      if (push) window.history.pushState({}, '', url.href);
-      document.body.classList.remove('nav-open');
-      scrollToTop(lenis);
-      clearPressedState();
-      deferPageEnhancements(currentNavigation, sourceLink);
+      const updatePage = () => {
+        destroyPage?.();
+        currentWrapper.replaceWith(page.wrapper);
+        updateHead(page);
+        if (push) window.history.pushState({}, '', url.href);
+        document.body.classList.remove('nav-open');
+        scrollToTop(lenis);
+        clearPressedState();
+        lenis?.resize();
+        initPage({ instant: true });
+        finishNavigation(currentNavigation, sourceLink);
+        schedulePrefetch();
+      };
+
+      if (document.startViewTransition) {
+        const transition = document.startViewTransition(updatePage);
+        await transition.updateCallbackDone;
+      } else {
+        updatePage();
+      }
     } catch (error) {
       if (currentNavigation !== navigationId) return;
       finishNavigation(currentNavigation, sourceLink);
@@ -335,8 +327,6 @@ export function initPageRouter({
     cancelIdlePrefetch();
     cancelPendingRequests(null, { prefetchOnly: false });
     clearPressedState();
-    if (enhancementFrame) cancelAnimationFrame(enhancementFrame);
-    if (enhancementTimer) window.clearTimeout(enhancementTimer);
     document.removeEventListener(pointerStartEvent, onPointerDown);
     document.removeEventListener(pointerEndEvent, onPointerEnd);
     document.removeEventListener('pointercancel', onPointerEnd);

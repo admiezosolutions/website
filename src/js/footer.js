@@ -46,5 +46,8 @@ const footerMarkup = `
 
 export function initFooter() {
   const footer = document.querySelector('[data-site-footer]');
-  if (footer) footer.innerHTML = footerMarkup;
+  if (!footer || footer.dataset.rendered) return;
+
+  footer.innerHTML = footerMarkup;
+  footer.dataset.rendered = 'true';
 }

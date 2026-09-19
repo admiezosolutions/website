@@ -1,6 +1,6 @@
 /* Main Entry Point — Initialize core UI first, then adaptive enhancements. */
 import { SporeCanvas } from './js/spore-canvas.js';
-import { cleanupNav, initNav } from './js/nav.js';
+import { initNavShell, updateNavForPage } from './js/nav.js';
 import { initAccordion } from './js/accordion.js';
 import { initTabs } from './js/tabs.js';
 import { initForm } from './js/form.js';
@@ -68,15 +68,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       scrollTier = performanceProfile.tier;
     }
 
-    initNav({ lenis: scroll?.lenis });
     animations?.initGSAPAnimations({ instant, profile: performanceProfile });
   };
 
   const canvas = new SporeCanvas('spore-canvas', performanceProfile);
+  initFooter();
+  initNavShell({ lenis: scrollFacade });
 
   const initPage = ({ instant = false } = {}) => {
-    initFooter();
-    initNav({ lenis: scroll?.lenis });
+    updateNavForPage();
     if (animations) animations.initGSAPAnimations({ instant, profile: performanceProfile });
 
     // Interactive components
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const destroyPage = () => {
     animations?.cleanupGSAPAnimations();
-    cleanupNav();
   };
 
   const destroyRouter = initPageRouter({
