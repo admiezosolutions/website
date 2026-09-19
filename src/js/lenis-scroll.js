@@ -5,15 +5,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function initLenis() {
+export function initLenis({ profile } = {}) {
+  const balanced = profile?.is('balanced');
   const lenis = new Lenis({
-    lerp: 0.16,
+    lerp: balanced ? 0.22 : 0.16,
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    syncTouch: true,
-    syncTouchLerp: 0.08,
-    touchMultiplier: 1.25,
+    syncTouch: !balanced,
+    syncTouchLerp: balanced ? 0.12 : 0.08,
+    touchMultiplier: balanced ? 1 : 1.25,
     wheelMultiplier: 1,
     stopInertiaOnNavigate: true,
     respectReducedMotion: true,

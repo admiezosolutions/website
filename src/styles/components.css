@@ -302,6 +302,37 @@
   background: radial-gradient(circle, var(--color-info) 0%, transparent 70%);
 }
 
+html[data-performance-tier='balanced'] .glass-card {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-performance-tier='low'] .glass-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
+}
+
+html[data-performance-tier='low'] .glass-card--dark {
+  background: rgba(25, 50, 41, 0.94);
+}
+
+html[data-performance-tier='low'] .gradient-blob {
+  filter: blur(38px);
+  opacity: 0.1;
+  transform: none !important;
+}
+
+html[data-performance-tier='low'] .float-anim,
+html[data-performance-tier='low'] .dot-card::before,
+html[data-performance-tier='low'] .dot-card::after,
+html[data-performance-tier='low'] .dot-card .dot-tl,
+html[data-performance-tier='low'] .dot-card .dot-br,
+html[data-performance-tier='low'] .glass-card::before {
+  animation: none;
+}
+
 /* ---- Section Header ---- */
 .section-header {
   text-align: center;

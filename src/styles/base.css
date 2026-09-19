@@ -72,6 +72,18 @@ button {
   background: none;
 }
 
+a,
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.is-pressed {
+  opacity: 0.76 !important;
+  transform: scale(0.97) !important;
+  transition-duration: 60ms !important;
+}
+
 ul, ol {
   list-style: none;
 }
@@ -150,6 +162,22 @@ p {
 ::view-transition-new(root) {
   animation-duration: 180ms;
   animation-timing-function: ease;
+}
+
+/* Capability tiers progressively reduce compositor and paint work. */
+html[data-performance-tier='balanced'] ::view-transition-old(root),
+html[data-performance-tier='balanced'] ::view-transition-new(root) {
+  animation-duration: 140ms;
+}
+
+html[data-performance-tier='low'] ::view-transition-old(root),
+html[data-performance-tier='low'] ::view-transition-new(root) {
+  animation-duration: 0.01ms;
+}
+
+html[data-performance-tier='low'] .section:not(.hero):not(.page-hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
 }
 
 @media (prefers-reduced-motion: reduce) {

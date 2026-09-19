@@ -5,10 +5,11 @@ const INTERACTION_RADIUS = 120;
 const INTERACTION_RADIUS_SQUARED = INTERACTION_RADIUS * INTERACTION_RADIUS;
 
 export class SporeCanvas {
-  constructor(canvasId = 'spore-canvas') {
+  constructor(canvasId = 'spore-canvas', profile) {
     this.canvas = document.getElementById(canvasId);
     if (!this.canvas) return;
 
+    this.profile = profile;
     this.ctx = this.canvas.getContext('2d', { alpha: true });
     this.particles = [];
     this.pointer = { x: -1000, y: -1000 };
@@ -19,12 +20,9 @@ export class SporeCanvas {
     this.lastFrameTime = 0;
     this.isVisible = true;
     this.isDestroyed = false;
+    this.isSuspended = false;
+    this.pointerBound = false;
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    const lowPowerDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    const compactViewport = window.matchMedia('(max-width: 768px)').matches;
-    this.targetFps = lowPowerDevice ? 30 : compactViewport ? 45 : 60;
-    this.frameInterval = 1000 / this.targetFps;
 
     this.animate = this.animate.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -32,12 +30,14 @@ export class SporeCanvas {
     this.onPointerLeave = this.onPointerLeave.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.onMotionPreferenceChange = this.onMotionPreferenceChange.bind(this);
+    this.onTierChange = this.onTierChange.bind(this);
 
+    this.configureQuality();
     this.resize();
     this.initParticles();
     this.bindEvents();
 
-    if (this.reducedMotion.matches) {
+    if (this.reducedMotion.matches || this.staticMode) {
       this.drawFrame(false);
     } else {
       this.start();
@@ -46,15 +46,27 @@ export class SporeCanvas {
 
   getParticleCount() {
     const areaScale = Math.min((this.width * this.height) / (1440 * 900), 1);
-    const lowPowerDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    const maximum = lowPowerDevice ? 30 : this.width <= 768 ? 36 : 60;
-    return Math.max(22, Math.round(maximum * Math.max(areaScale, 0.65)));
+    return Math.max(this.minimumParticles, Math.round(this.maximumParticles * Math.max(areaScale, 0.55)));
+  }
+
+  configureQuality() {
+    const tier = this.profile?.tier || 'balanced';
+    this.staticMode = tier === 'low';
+    this.targetFps = tier === 'high' ? 60 : tier === 'balanced' ? 30 : 1;
+    this.frameInterval = 1000 / this.targetFps;
+    this.dprCap = tier === 'high' ? 1.5 : 1;
+    this.maximumParticles = tier === 'high' ? 60 : tier === 'balanced' ? 30 : 10;
+    this.minimumParticles = tier === 'high' ? 22 : tier === 'balanced' ? 14 : 8;
   }
 
   resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, this.dprCap);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    if (width === this.width && height === this.height && dpr === this.dpr) return;
+    this.width = width;
+    this.height = height;
+    this.dpr = dpr;
     this.canvas.width = Math.round(this.width * dpr);
     this.canvas.height = Math.round(this.height * dpr);
     this.canvas.style.width = `${this.width}px`;
@@ -64,40 +76,67 @@ export class SporeCanvas {
 
   initParticles() {
     const particleCount = this.getParticleCount();
-    this.particles = Array.from({ length: particleCount }, () => this.createParticle());
+    this.particles.length = particleCount;
+    for (let index = 0; index < particleCount; index += 1) {
+      this.particles[index] = this.resetParticle(this.particles[index] || {});
+    }
   }
 
-  createParticle(fromBottom = false) {
+  resetParticle(particle, fromBottom = false) {
     const hue = Math.random() > 0.5 ? 155 : 35;
     const opacity = Math.random() * 0.3 + 0.05;
 
-    return {
-      x: Math.random() * this.width,
-      y: fromBottom ? this.height + 20 : Math.random() * this.height,
-      size: Math.random() * 3 + 1,
-      speedY: -(Math.random() * 0.5 + 0.15),
-      speedX: (Math.random() - 0.5) * 0.3,
-      opacity,
-      fill: `hsla(${hue}, 50%, 45%, ${opacity})`,
-      glow: `hsla(${hue}, 50%, 45%, ${opacity * 0.15})`,
-      wobble: Math.random() * TAU,
-      wobbleSpeed: Math.random() * 0.02 + 0.005,
-    };
+    particle.x = Math.random() * this.width;
+    particle.y = fromBottom ? this.height + 20 : Math.random() * this.height;
+    particle.size = Math.random() * 3 + 1;
+    particle.speedY = -(Math.random() * 0.5 + 0.15);
+    particle.speedX = (Math.random() - 0.5) * 0.3;
+    particle.fill = `hsla(${hue}, 50%, 45%, ${opacity})`;
+    particle.glow = `hsla(${hue}, 50%, 45%, ${opacity * 0.15})`;
+    particle.wobble = Math.random() * TAU;
+    particle.wobbleSpeed = Math.random() * 0.02 + 0.005;
+    return particle;
   }
 
   bindEvents() {
     window.addEventListener('resize', this.onResize, { passive: true });
-    window.addEventListener('pointermove', this.onPointerMove, { passive: true });
-    document.documentElement.addEventListener('pointerleave', this.onPointerLeave, { passive: true });
+    this.updatePointerEvents();
     document.addEventListener('visibilitychange', this.onVisibilityChange);
+    window.addEventListener('admiezo:performance-tier', this.onTierChange);
     this.reducedMotion.addEventListener('change', this.onMotionPreferenceChange);
 
-    this.observer = new IntersectionObserver(([entry]) => {
-      this.isVisible = entry.isIntersecting;
-      if (this.isVisible) this.start();
-      else this.stop();
-    });
-    this.observer.observe(this.canvas);
+    if ('IntersectionObserver' in window) {
+      this.observer = new IntersectionObserver(([entry]) => {
+        this.isVisible = entry.isIntersecting;
+        if (this.isVisible) this.start();
+        else this.stop();
+      });
+      this.observer.observe(this.canvas);
+    }
+  }
+
+  updatePointerEvents() {
+    const shouldBind = this.profile?.is('high') && window.matchMedia('(pointer: fine)').matches;
+    if (shouldBind && !this.pointerBound) {
+      window.addEventListener('pointermove', this.onPointerMove, { passive: true });
+      document.documentElement.addEventListener('pointerleave', this.onPointerLeave, { passive: true });
+      this.pointerBound = true;
+    } else if (!shouldBind && this.pointerBound) {
+      window.removeEventListener('pointermove', this.onPointerMove);
+      document.documentElement.removeEventListener('pointerleave', this.onPointerLeave);
+      this.pointerBound = false;
+      this.onPointerLeave();
+    }
+  }
+
+  onTierChange() {
+    this.stop();
+    this.configureQuality();
+    this.updatePointerEvents();
+    this.resize();
+    this.initParticles();
+    this.drawFrame(false);
+    if (!this.staticMode) this.start();
   }
 
   onResize() {
@@ -106,7 +145,7 @@ export class SporeCanvas {
       this.resizeFrame = null;
       this.resize();
       this.initParticles();
-      if (this.reducedMotion.matches) this.drawFrame(false);
+      if (this.reducedMotion.matches || this.staticMode) this.drawFrame(false);
     });
   }
 
@@ -137,14 +176,26 @@ export class SporeCanvas {
   start() {
     if (
       this.isDestroyed ||
+      this.isSuspended ||
       this.animationId ||
       document.hidden ||
       !this.isVisible ||
-      this.reducedMotion.matches
+      this.reducedMotion.matches ||
+      this.staticMode
     ) return;
 
     this.lastFrameTime = performance.now();
     this.animationId = requestAnimationFrame(this.animate);
+  }
+
+  suspend() {
+    this.isSuspended = true;
+    this.stop();
+  }
+
+  resume() {
+    this.isSuspended = false;
+    this.start();
   }
 
   stop() {
@@ -158,10 +209,12 @@ export class SporeCanvas {
     this.ctx.fillStyle = particle.fill;
     this.ctx.fill();
 
-    this.ctx.beginPath();
-    this.ctx.arc(particle.x, particle.y, particle.size * 3, 0, TAU);
-    this.ctx.fillStyle = particle.glow;
-    this.ctx.fill();
+    if (!this.staticMode) {
+      this.ctx.beginPath();
+      this.ctx.arc(particle.x, particle.y, particle.size * 3, 0, TAU);
+      this.ctx.fillStyle = particle.glow;
+      this.ctx.fill();
+    }
   }
 
   drawFrame(updateParticles = true) {
@@ -187,8 +240,7 @@ export class SporeCanvas {
         }
 
         if (particle.y < -20) {
-          particle = this.createParticle(true);
-          this.particles[index] = particle;
+          this.resetParticle(particle, true);
         }
       }
 
@@ -210,9 +262,12 @@ export class SporeCanvas {
     this.stop();
     if (this.resizeFrame) cancelAnimationFrame(this.resizeFrame);
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('pointermove', this.onPointerMove);
-    document.documentElement.removeEventListener('pointerleave', this.onPointerLeave);
+    if (this.pointerBound) {
+      window.removeEventListener('pointermove', this.onPointerMove);
+      document.documentElement.removeEventListener('pointerleave', this.onPointerLeave);
+    }
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
+    window.removeEventListener('admiezo:performance-tier', this.onTierChange);
     this.reducedMotion.removeEventListener('change', this.onMotionPreferenceChange);
     this.observer?.disconnect();
   }

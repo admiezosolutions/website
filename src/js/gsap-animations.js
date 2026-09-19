@@ -36,8 +36,10 @@ function showAnimatedElementsImmediately() {
   });
 }
 
-export function initGSAPAnimations({ instant = false } = {}) {
+export function initGSAPAnimations({ instant = false, profile } = {}) {
   cleanupGSAPAnimations();
+
+  const highQuality = profile?.is('high') ?? true;
 
   if (instant || reducedMotion.matches) {
     showAnimatedElementsImmediately();
@@ -134,7 +136,7 @@ export function initGSAPAnimations({ instant = false } = {}) {
 
   // ---- 3D Tilt on Hero Visual ----
   const heroCard = document.querySelector('.hero__visual-card');
-  if (heroCard && window.matchMedia('(pointer: fine)').matches) {
+  if (highQuality && heroCard && window.matchMedia('(pointer: fine)').matches) {
     const setRotateX = gsap.quickSetter(heroCard, 'rotateX', 'deg');
     const setRotateY = gsap.quickSetter(heroCard, 'rotateY', 'deg');
     const baseRotateX = 3;
@@ -203,7 +205,7 @@ export function initGSAPAnimations({ instant = false } = {}) {
     };
   }
 
-  if (!instant) {
+  if (!instant && highQuality) {
   // ---- Section zoom on scroll ----
   gsap.utils.toArray('.zoom-section').forEach((section) => {
     gsap.fromTo(section, 
@@ -259,7 +261,7 @@ export function initGSAPAnimations({ instant = false } = {}) {
   }
 
   // ---- Floating animation for decorative elements ----
-  gsap.utils.toArray('.float-anim').forEach((el, i) => {
+  if (highQuality) gsap.utils.toArray('.float-anim').forEach((el, i) => {
     gsap.to(el, {
       y: -15,
       duration: 2 + i * 0.3,
