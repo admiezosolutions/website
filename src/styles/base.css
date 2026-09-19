@@ -146,10 +146,6 @@ p {
   padding: 0 var(--container-padding);
 }
 
-.container--wide {
-  max-width: var(--container-wide);
-}
-
 /* Animation helpers */
 .reveal,
 .reveal-left,

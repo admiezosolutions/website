@@ -7,6 +7,16 @@ function connectionIsSlow(connection) {
   return connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '');
 }
 
+function addMediaQueryListener(query, listener) {
+  if (query.addEventListener) query.addEventListener('change', listener);
+  else query.addListener(listener);
+}
+
+function removeMediaQueryListener(query, listener) {
+  if (query.removeEventListener) query.removeEventListener('change', listener);
+  else query.removeListener(listener);
+}
+
 function detectInitialTier() {
   const connection = navigator.connection;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,7 +58,7 @@ class PerformanceProfile {
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
     this.onMotionPreferenceChange = this.onMotionPreferenceChange.bind(this);
     document.addEventListener('visibilitychange', this.onVisibilityChange);
-    this.reducedMotion.addEventListener('change', this.onMotionPreferenceChange);
+    addMediaQueryListener(this.reducedMotion, this.onMotionPreferenceChange);
     this.scheduleProbe(2500);
   }
 
@@ -154,7 +164,7 @@ class PerformanceProfile {
     window.clearTimeout(this.probeTimer);
     if (this.probeFrame) cancelAnimationFrame(this.probeFrame);
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
-    this.reducedMotion.removeEventListener('change', this.onMotionPreferenceChange);
+    removeMediaQueryListener(this.reducedMotion, this.onMotionPreferenceChange);
   }
 }
 

@@ -103,7 +103,11 @@ export class SporeCanvas {
     this.updatePointerEvents();
     document.addEventListener('visibilitychange', this.onVisibilityChange);
     window.addEventListener('admiezo:performance-tier', this.onTierChange);
-    this.reducedMotion.addEventListener('change', this.onMotionPreferenceChange);
+    if (this.reducedMotion.addEventListener) {
+      this.reducedMotion.addEventListener('change', this.onMotionPreferenceChange);
+    } else {
+      this.reducedMotion.addListener(this.onMotionPreferenceChange);
+    }
 
     if ('IntersectionObserver' in window) {
       this.observer = new IntersectionObserver(([entry]) => {
@@ -268,7 +272,11 @@ export class SporeCanvas {
     }
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
     window.removeEventListener('admiezo:performance-tier', this.onTierChange);
-    this.reducedMotion.removeEventListener('change', this.onMotionPreferenceChange);
+    if (this.reducedMotion.removeEventListener) {
+      this.reducedMotion.removeEventListener('change', this.onMotionPreferenceChange);
+    } else {
+      this.reducedMotion.removeListener(this.onMotionPreferenceChange);
+    }
     this.observer?.disconnect();
   }
 }

@@ -1,11 +1,7 @@
-/* Lenis Smooth Scroll — Momentum scrolling with GSAP sync */
+/* Lenis Smooth Scroll - independent from optional GSAP enhancements. */
 import Lenis from 'lenis';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
-export function initLenis({ profile } = {}) {
+export function initLenis({ profile, onScroll } = {}) {
   const balanced = profile?.is('balanced');
   const lenis = new Lenis({
     lerp: balanced ? 0.22 : 0.16,
@@ -20,14 +16,13 @@ export function initLenis({ profile } = {}) {
     respectReducedMotion: true,
   });
 
-  const removeScrollListener = lenis.on('scroll', ScrollTrigger.update);
-
-  // GSAP owns the single primary frame clock used by Lenis and ScrollTrigger.
-  const onTick = (time) => {
-    lenis.raf(time * 1000);
+  const removeScrollListener = onScroll ? lenis.on('scroll', onScroll) : null;
+  let animationFrame = null;
+  const onFrame = (time) => {
+    lenis.raf(time);
+    animationFrame = requestAnimationFrame(onFrame);
   };
-  gsap.ticker.add(onTick);
-  gsap.ticker.lagSmoothing(0);
+  animationFrame = requestAnimationFrame(onFrame);
 
   const getHeaderOffset = () => {
     const header = document.querySelector('.header');
@@ -73,7 +68,7 @@ export function initLenis({ profile } = {}) {
     destroy() {
       document.removeEventListener('click', onAnchorClick);
       removeScrollListener?.();
-      gsap.ticker.remove(onTick);
+      if (animationFrame) cancelAnimationFrame(animationFrame);
       lenis.destroy();
     },
   };

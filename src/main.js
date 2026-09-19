@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let scroll = null;
   let scrollTier = null;
   let animations = null;
-  let enhancementPromise = null;
+  let scrollModulePromise = null;
+  let animationModulePromise = null;
   let enhancementVersion = 0;
 
   const scrollFacade = {
@@ -25,35 +26,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     resize() { scroll?.lenis?.resize(); },
   };
 
-  const loadEnhancements = () => {
-    enhancementPromise ||= Promise.all([
-      import('./js/lenis-scroll.js'),
-      import('./js/gsap-animations.js'),
-    ]).then(([scrollModule, animationModule]) => ({ scrollModule, animationModule }));
-    return enhancementPromise;
+  const loadScrollModule = () => {
+    scrollModulePromise ||= import('./js/lenis-scroll.js');
+    return scrollModulePromise;
+  };
+
+  const loadAnimationModule = () => {
+    animationModulePromise ||= import('./js/gsap-animations.js');
+    return animationModulePromise;
   };
 
   const applyEnhancementTier = async ({ instant = false } = {}) => {
     const version = ++enhancementVersion;
-    if (performanceProfile.is('low')) {
+    const useAnimations = performanceProfile.is('high');
+    const useLenis = !performanceProfile.is('low') &&
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const [scrollModule, animationModule] = await Promise.all([
+      useLenis ? loadScrollModule() : Promise.resolve(null),
+      useAnimations ? loadAnimationModule() : Promise.resolve(null),
+    ]);
+
+    if (version !== enhancementVersion) return;
+
+    if (!useAnimations) {
       animations?.cleanupGSAPAnimations();
+      animations = null;
+    } else {
+      animations = animationModule;
+    }
+
+    if (!useLenis) {
       scroll?.destroy();
       scroll = null;
       scrollTier = null;
-      initNav();
-      return;
-    }
-
-    const modules = await loadEnhancements();
-    if (version !== enhancementVersion || performanceProfile.is('low')) return;
-    animations = modules.animationModule;
-    if (scrollTier !== performanceProfile.tier) {
+    } else if (scrollTier !== performanceProfile.tier) {
       scroll?.destroy();
-      scroll = modules.scrollModule.initLenis({ profile: performanceProfile });
+      scroll = scrollModule.initLenis({
+        profile: performanceProfile,
+        onScroll: animations?.updateScrollTriggers,
+      });
       scrollTier = performanceProfile.tier;
     }
-    initNav({ lenis: scroll.lenis });
-    animations.initGSAPAnimations({ instant, profile: performanceProfile });
+
+    initNav({ lenis: scroll?.lenis });
+    animations?.initGSAPAnimations({ instant, profile: performanceProfile });
   };
 
   const canvas = new SporeCanvas('spore-canvas', performanceProfile);

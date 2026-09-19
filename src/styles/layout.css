@@ -114,11 +114,13 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
   position: absolute;
   bottom: -2px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
   background: var(--header-link-underline);
   border-radius: var(--radius-pill);
-  transition: width var(--transition-base), background var(--transition-base);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-base), background-color var(--transition-base);
 }
 
 .header__link:hover,
@@ -128,7 +130,7 @@ body.nav-open .header.header--contrast-light:not(.scrolled) {
 
 .header__link:hover::after,
 .header__link.active::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
 .header__cta {
@@ -394,10 +396,6 @@ html[data-performance-tier='low'] .header.scrolled {
   max-width: 620px;
 }
 
-.hero__badge {
-  margin-bottom: var(--space-xl);
-}
-
 .hero__title {
   font-size: clamp(2.4rem, 3.8vw, 3.75rem);
   font-weight: 800;
@@ -607,7 +605,6 @@ html[data-performance-tier='low'] .header.scrolled {
   height: 100%;
   background: linear-gradient(90deg, #176A4F, #A86D10);
   border-radius: 100px;
-  transition: width 1s ease;
 }
 
 .hero__dash-feed {
@@ -941,56 +938,6 @@ html[data-performance-tier='low'] .header.scrolled {
   .team-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* ---- Timeline ---- */
-.timeline {
-  position: relative;
-  padding-left: var(--space-3xl);
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 12px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--color-border);
-}
-
-.timeline__item {
-  position: relative;
-  margin-bottom: var(--space-2xl);
-}
-
-.timeline__dot {
-  position: absolute;
-  left: calc(-1 * var(--space-3xl) + 6px);
-  top: 4px;
-  width: 14px;
-  height: 14px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
-  border: 3px solid var(--color-bg);
-}
-
-.timeline__year {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.timeline__title {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--space-xs);
-}
-
-.timeline__desc {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
 }
 
 /* ---- Solution Card ---- */

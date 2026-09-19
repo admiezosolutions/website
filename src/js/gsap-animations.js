@@ -15,6 +15,10 @@ export function cleanupGSAPAnimations() {
   animationsContext = null;
 }
 
+export function updateScrollTriggers() {
+  ScrollTrigger.update();
+}
+
 function showAnimatedElementsImmediately() {
   const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
   const staggerItems = document.querySelectorAll('.stagger-grid > *');
@@ -260,15 +264,5 @@ export function initGSAPAnimations({ instant = false, profile } = {}) {
   });
   }
 
-  // ---- Floating animation for decorative elements ----
-  if (highQuality) gsap.utils.toArray('.float-anim').forEach((el, i) => {
-    gsap.to(el, {
-      y: -15,
-      duration: 2 + i * 0.3,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-  });
   }, document.querySelector('.page-wrapper') || document.body);
 }
