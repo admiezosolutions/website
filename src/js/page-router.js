@@ -7,6 +7,7 @@ const pendingPages = new Map();
 function canonicalUrl(url) {
   const canonical = new URL(url, window.location.href);
   canonical.hash = '';
+  if (canonical.pathname.endsWith('/')) canonical.pathname += 'index.html';
   return canonical.href;
 }
 
@@ -16,7 +17,7 @@ function isPageUrl(url) {
 }
 
 function normalizePathname(pathname) {
-  return pathname === '/' ? '/index.html' : pathname;
+  return pathname.endsWith('/') ? `${pathname}index.html` : pathname;
 }
 
 function getEligibleUrl(link) {
@@ -131,7 +132,7 @@ export function initPageRouter({
   let pressTimer = null;
   let recentInteractionUntil = 0;
 
-  const cacheLimit = () => profile?.is('low') ? 1 : profile?.is('balanced') ? 2 : 3;
+  const cacheLimit = () => profile?.is('low') ? 1 : profile?.is('balanced') ? 3 : 5;
   const initialPage = extractPage(document);
   if (initialPage) cachePage(canonicalUrl(window.location.href), initialPage, cacheLimit());
 
@@ -172,7 +173,7 @@ export function initPageRouter({
       }
 
       const currentKey = canonicalUrl(window.location.href);
-      const limit = profile?.is('high') ? 2 : 1;
+      const limit = profile?.is('high') ? 4 : 2;
       const seen = new Set();
       for (const link of document.querySelectorAll('.header__link[href], .header__cta a[href]')) {
         const url = getEligibleUrl(link);

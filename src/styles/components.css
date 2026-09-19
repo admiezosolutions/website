@@ -421,16 +421,32 @@ html[data-performance-tier='low'] .glass-card::before {
 }
 
 .accordion__body {
-  max-height: 0;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
   overflow: hidden;
-  transition: max-height var(--transition-slow);
+}
+
+.accordion__body > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.accordion__item.active .accordion__body {
+  grid-template-rows: 1fr;
 }
 
 .accordion__content {
-  padding: 0 var(--space-xl) var(--space-xl);
+  padding: 0 var(--space-xl);
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
+}
+
+.accordion__content::after {
+  content: '';
+  display: block;
+  height: var(--space-xl);
 }
 
 /* ---- Tabs ---- */
@@ -490,7 +506,7 @@ html[data-performance-tier='low'] .glass-card::before {
 
 .tabs__panel {
   display: none;
-  animation: fadeInUp 0.4s ease;
+  animation: fadeInUp 0.18s ease;
 }
 
 .tabs__panel.active {
@@ -500,7 +516,7 @@ html[data-performance-tier='low'] .glass-card::before {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;

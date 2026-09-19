@@ -2,12 +2,9 @@
 
 function setItemState(item, isActive) {
   const header = item.querySelector('.accordion__header');
-  const body = item.querySelector('.accordion__body');
-  const content = item.querySelector('.accordion__content');
 
   item.classList.toggle('active', isActive);
   if (header) header.setAttribute('aria-expanded', String(isActive));
-  if (body) body.style.maxHeight = isActive && content ? `${content.scrollHeight}px` : '0';
 }
 
 export function refreshAccordions(root = document) {

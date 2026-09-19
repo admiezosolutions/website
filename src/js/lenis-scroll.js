@@ -2,15 +2,14 @@
 import Lenis from 'lenis';
 
 export function initLenis({ profile, onScroll } = {}) {
-  const balanced = profile?.is('balanced');
   const lenis = new Lenis({
-    lerp: balanced ? 0.22 : 0.16,
+    lerp: 0.28,
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    syncTouch: !balanced,
-    syncTouchLerp: balanced ? 0.12 : 0.08,
-    touchMultiplier: balanced ? 1 : 1.25,
+    syncTouch: !profile?.is('balanced'),
+    syncTouchLerp: 0.15,
+    touchMultiplier: profile?.is('balanced') ? 1 : 1.25,
     wheelMultiplier: 1,
     stopInertiaOnNavigate: true,
     respectReducedMotion: true,
